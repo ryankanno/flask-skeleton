@@ -26,10 +26,12 @@ def create_app(name=None):
 
 
 def configure_app(app):
+    app.config.from_object(Config)
+    configure_blueprints(app)
     configure_error_handlers(app)
 
 
-def configure_blueprints(app, blueprints=None):
+def configure_blueprints(app, blueprints=[]):
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
