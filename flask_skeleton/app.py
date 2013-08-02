@@ -4,43 +4,41 @@
 from flask import Flask
 from flask import render_template
 
-from config import Config
-from apps.www import www
+from config import DefaultConfig
 
-
-DEFAULT_BLUEPRINTS = (
-    www,
-)
-
-def get_app(name=None, config=Config, blueprints=DEFAULT_BLUEPRINTS):
+def get_app(config=None):
     """Creates a Flask application"""
-    name = name or "foo"
+    config = config or DefaultConfig
+    app = create_app(config)
 
-    app = create_app(name, config)
-    configure_app(app, config, blueprints)
+    configure_app(app, config)
+    configure_blueprints(app, config)
+    configure_logging(app,config)
+    configure_error_handlers(app,config)
+
     return app
 
 
-def create_app(name=None, config=Config):
-    template_folder = config.TEMPLATE_DIR
-    static_folder = config.STATIC_DIR
-    return Flask(name, 
-        template_folder=template_folder, 
-        static_folder=static_folder)
+def create_app(config):
+    return Flask(config.PROJECT_NAME, 
+        template_folder=config.TEMPLATE_DIR, 
+        static_folder=config.STATIC_DIR)
 
 
-def configure_app(app, config, blueprints):
+def configure_app(app, config):
     app.config.from_object(config)
-    configure_blueprints(app, blueprints)
-    configure_error_handlers(app)
 
 
-def configure_blueprints(app, blueprints):
-    for blueprint in blueprints:
+def configure_blueprints(app, config):
+    for blueprint in config.BLUEPRINTS:
         app.register_blueprint(blueprint)
 
 
-def configure_error_handlers(app):
+def configure_logging(app, config):
+    pass
+
+
+def configure_error_handlers(app, config):
     @app.errorhandler(401)
     def unauthorized(error):
         return render_template("errors/unauthorized.html"), 401
