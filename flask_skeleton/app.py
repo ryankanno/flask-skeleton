@@ -5,33 +5,37 @@ from flask import Flask
 from flask import render_template
 
 from config import Config
+from apps.www import www
 
 
-def get_app(name=None, config=None):
+DEFAULT_BLUEPRINTS = (
+    www,
+)
+
+def get_app(name=None, config=Config, blueprints=DEFAULT_BLUEPRINTS):
     """Creates a Flask application"""
     name = name or "foo"
-    config = config or "foo"
 
-    app = create_app(name)
-    configure_app(app)
+    app = create_app(name, config)
+    configure_app(app, config, blueprints)
     return app
 
 
-def create_app(name=None):
-    template_folder = Config.TEMPLATE_DIR
-    static_folder = Config.STATIC_DIR
+def create_app(name=None, config=Config):
+    template_folder = config.TEMPLATE_DIR
+    static_folder = config.STATIC_DIR
     return Flask(name, 
         template_folder=template_folder, 
         static_folder=static_folder)
 
 
-def configure_app(app):
-    app.config.from_object(Config)
-    configure_blueprints(app)
+def configure_app(app, config, blueprints):
+    app.config.from_object(config)
+    configure_blueprints(app, blueprints)
     configure_error_handlers(app)
 
 
-def configure_blueprints(app, blueprints=[]):
+def configure_blueprints(app, blueprints):
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
