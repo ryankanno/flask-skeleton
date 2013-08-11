@@ -5,50 +5,64 @@ from flask import Flask
 from flask import render_template
 
 from config import DefaultConfig
+from extensions import mail
+
 
 def get_app(config=None):
     """Creates a Flask application"""
-    config = config or DefaultConfig
-    app = create_app(config)
+    app = Flask(__name__)
 
     configure_app(app, config)
-    configure_blueprints(app, config)
-    configure_logging(app,config)
-    configure_error_handlers(app,config)
+
+    configure_blueprints(app)
+    configure_extensions(app)
+    configure_logging(app)
+    configure_error_handlers(app)
 
     return app
 
 
-def create_app(config):
-    return Flask(config.PROJECT_NAME, 
-        template_folder=config.TEMPLATE_DIR, 
-        static_folder=config.STATIC_DIR)
-
-
 def configure_app(app, config):
-    app.config.from_object(config)
+    app.config.from_object(DefaultConfig)
+
+    if config is not None:
+        app.config_from_object(config)
+
+    if 'CONFIG_ENVVAR' in app.config:
+        app.config.from_envvar(app.config['CONFIG_ENVVAR'])
 
 
-def configure_blueprints(app, config):
-    for blueprint in config.BLUEPRINTS:
+def configure_blueprints(app):
+    blueprints = app.config['BLUEPRINTS'] if 'BLUEPRINTS' in app.config else []
+    for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
 
-def configure_logging(app, config):
-    pass
+def configure_extensions(app):
+    mail.init_app(app)
 
 
-def configure_error_handlers(app, config):
+def configure_error_handlers(app):
     @app.errorhandler(401)
     def unauthorized(error):
-        return render_template("errors/unauthorized.html"), 401
+        if request.is_xhr:
+            return jsonfiy(error="Unauthorized")
+        return render_template("errors/unauthorized.html", error=error), 401
 
     @app.errorhandler(404)
     def not_found(error):
-        return render_template("errors/not_found.html"), 404
+        if request.is_xhr:
+            return jsonfiy(error="Page not found")
+        return render_template("errors/not_found.html", error=error), 404
 
     @app.errorhandler(500)
     def internal_server_error(error):
-        return render_template("errors/internal_server_error.html"), 500
+        if request.is_xhr:
+            return jsonfiy(error="An error has occurred")
+        return render_template("errors/internal_server_error.html", error=error), 500
+
+
+def configure_logging(app):
+    pass
 
 # vim: filetype=python
