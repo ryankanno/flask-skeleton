@@ -5,9 +5,11 @@ from flask import Flask
 from flask import render_template
 
 from config import DefaultConfig
+from extensions import cache
 from extensions import mail
 
 
+# TODO: Figure out how to set template path, etc
 def get_app(config=None):
     """Creates a Flask application"""
     app = Flask(__name__)
@@ -40,6 +42,7 @@ def configure_blueprints(app):
 
 def configure_extensions(app):
     mail.init_app(app)
+    cache.init_app(app)
 
 
 def configure_error_handlers(app):
