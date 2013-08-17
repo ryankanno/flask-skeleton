@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
+from flask import jsonify
 from flask import render_template
+from flask import request
 
 from config import DefaultConfig
 from extensions import cache
@@ -27,6 +29,12 @@ def get_app(config=None):
 def configure_app(app, config):
     app.config.from_object(DefaultConfig)
 
+    if 'TEMPLATE_DIR' in app.config:
+        app.template_folder = app.config['TEMPLATE_DIR']
+
+    if 'STATIC_DIR' in app.config:
+        app.static_folder = app.config['STATIC_DIR']
+
     if config is not None:
         app.config_from_object(config)
 
@@ -49,19 +57,19 @@ def configure_error_handlers(app):
     @app.errorhandler(401)
     def unauthorized(error):
         if request.is_xhr:
-            return jsonfiy(error="Unauthorized")
+            return jsonify(error="Unauthorized")
         return render_template("errors/unauthorized.html", error=error), 401
 
     @app.errorhandler(404)
     def not_found(error):
         if request.is_xhr:
-            return jsonfiy(error="Page not found")
+            return jsonify(error="Page not found")
         return render_template("errors/not_found.html", error=error), 404
 
     @app.errorhandler(500)
     def internal_server_error(error):
         if request.is_xhr:
-            return jsonfiy(error="An error has occurred")
+            return jsonify(error="An error has occurred")
         return render_template("errors/internal_server_error.html", error=error), 500
 
 
