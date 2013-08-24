@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from flask_debugtoolbar import DebugToolbarExtension
+
 from flask import Flask
 from flask import jsonify
 from flask import render_template
@@ -11,7 +13,6 @@ from extensions import cache
 from extensions import mail
 
 
-# TODO: Figure out how to set template path, etc
 def get_app(config=None):
     """Creates a Flask application"""
     app = Flask(__name__)
@@ -51,6 +52,8 @@ def configure_blueprints(app):
 def configure_extensions(app):
     mail.init_app(app)
     cache.init_app(app)
+
+    toolbar = DebugToolbarExtension(app)
 
 
 def configure_error_handlers(app):
