@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from config import DefaultConfig
+from extensions import cache
+from extensions import mail
+
 from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask
@@ -8,9 +12,10 @@ from flask import jsonify
 from flask import render_template
 from flask import request
 
-from config import DefaultConfig
-from extensions import cache
-from extensions import mail
+import json
+import logging
+import logging.config
+import os
 
 
 def get_app(config=None):
@@ -77,6 +82,11 @@ def configure_error_handlers(app):
 
 
 def configure_logging(app):
-    pass
+    log_ini = os.path.join(app.root_path, app.config['LOG_INI'])
+
+    if os.path.exists(log_ini):
+        with open(log_ini, 'rt') as f:
+            log_config = json.load(f)
+        logging.config.dictConfig(log_config)
 
 # vim: filetype=python

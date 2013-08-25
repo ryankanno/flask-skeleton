@@ -36,3 +36,6 @@ nosetests.xml
 
 # Bower
 */apps/static/components/**
+
+# logging
+*/log/*.log
