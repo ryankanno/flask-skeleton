@@ -35,17 +35,17 @@ def get_app(config=None):
 def configure_app(app, config):
     app.config.from_object(DefaultConfig)
 
-    if 'TEMPLATE_DIR' in app.config:
-        app.template_folder = app.config['TEMPLATE_DIR']
-
-    if 'STATIC_DIR' in app.config:
-        app.static_folder = app.config['STATIC_DIR']
-
     if config is not None:
         app.config_from_object(config)
 
     if 'CONFIG_ENVVAR' in app.config:
         app.config.from_envvar(app.config['CONFIG_ENVVAR'])
+
+    if 'TEMPLATE_DIR' in app.config:
+        app.template_folder = app.config['TEMPLATE_DIR']
+
+    if 'STATIC_DIR' in app.config:
+        app.static_folder = app.config['STATIC_DIR']
 
 
 def configure_blueprints(app):
