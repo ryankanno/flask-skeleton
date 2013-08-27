@@ -1,8 +1,8 @@
 # Flask-skeleton
 
-This is a base Flask application I model most of my projects after.
+This is an opinionated Flask application I model most of my projects after.
 
-## Tech
+## Dependencies
 
 * [Bower](http://bower.io)
 
@@ -12,4 +12,6 @@ This is a base Flask application I model most of my projects after.
 
 ## Install
 
+* `pip install -r requirements.txt`
 * Create log file `etc/logging.ini.json` (use etc/logging.ini.json.example as a template)
+* `python manage.py runserver`
