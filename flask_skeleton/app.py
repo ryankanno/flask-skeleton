@@ -3,6 +3,7 @@
 
 from config import DefaultConfig
 from extensions import cache
+from extensions import csrf
 from extensions import mail
 
 from flask_debugtoolbar import DebugToolbarExtension
@@ -57,6 +58,7 @@ def configure_blueprints(app):
 def configure_extensions(app):
     mail.init_app(app)
     cache.init_app(app)
+    csrf.init_app(app)
 
     toolbar = DebugToolbarExtension(app)
 

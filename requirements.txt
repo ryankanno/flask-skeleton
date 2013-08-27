@@ -3,3 +3,4 @@ Flask-Script
 Flask-Mail
 Flask-Cache
 Flask-DebugToolBar
+Flask-SeaSurf
