@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from config import DefaultConfig
+from extensions import bcrypt
 from extensions import cache
 from extensions import csrf
 from extensions import mail
@@ -56,9 +57,10 @@ def configure_blueprints(app):
 
 
 def configure_extensions(app):
-    mail.init_app(app)
+    bcrypt.init_app(app)
     cache.init_app(app)
     csrf.init_app(app)
+    mail.init_app(app)
 
     toolbar = DebugToolbarExtension(app)
 

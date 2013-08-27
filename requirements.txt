@@ -1,6 +1,7 @@
 Flask==0.10.1
-Flask-Script
-Flask-Mail
+Flask-Bcrypt
 Flask-Cache
 Flask-DebugToolBar
+Flask-Mail
 Flask-SeaSurf
+Flask-Script
