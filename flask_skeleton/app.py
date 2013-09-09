@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from config import DefaultConfig
+from extensions import api
 from extensions import bcrypt
 from extensions import cache
 from extensions import csrf
@@ -57,6 +58,7 @@ def configure_blueprints(app):
 
 
 def configure_extensions(app):
+    api.init_app(app)
     bcrypt.init_app(app)
     cache.init_app(app)
     csrf.init_app(app)

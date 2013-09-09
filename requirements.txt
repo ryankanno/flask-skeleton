@@ -3,5 +3,6 @@ Flask-Bcrypt
 Flask-Cache
 Flask-DebugToolBar
 Flask-Mail
+Flask-Restful
 Flask-SeaSurf
 Flask-Script
