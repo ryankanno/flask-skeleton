@@ -1,0 +1,9 @@
+# usage: ansible-playbook example-playbook.yml --extra-vars=""
+---
+- name: install flask-skeleton
+  hosts: vagrant
+  sudo: True
+  user: vagrant
+  gather_facts: False
+  tasks:
+    - include: roles/common/tasks/main.yml
