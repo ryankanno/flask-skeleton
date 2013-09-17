@@ -27,8 +27,8 @@ def get_app(config=None):
 
     configure_app(app, config)
 
-    configure_blueprints(app)
     configure_extensions(app)
+    configure_blueprints(app)
     configure_logging(app)
     configure_error_handlers(app)
 
