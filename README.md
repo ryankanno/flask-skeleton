@@ -6,8 +6,16 @@ This is an opinionated Flask application I model most of my projects after.
 
 * [Bower](http://bower.io)
 
-## Included
+## Libraries
 
+* Flask
+* Flask-Bcrypt
+* Flask-Cache
+* Flask-DebugToolBar
+* Flask-Mail
+* Flask-Restful
+* Flask-SeaSurf
+* Flask-Script
 * [Bootstrap 3](http://getbootstrap)
 
 ## Install
