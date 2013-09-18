@@ -1,12 +1,16 @@
-# Flask-skeleton
+# flask-skeleton
+
+Here be dragons.
 
 This is an opinionated Flask application I model most of my projects after.
+
+It's stable, but always in a state of flux. :D
 
 ## Dependencies
 
 * [Bower](http://bower.io)
 
-## Libraries
+## Libraries used
 
 * Flask
 * Flask-Bcrypt
@@ -36,3 +40,7 @@ then run the following command.
 
 * `sudo docker build -t ryankanno/flask_skeleton .`
 * `sudo docker run ryankanno/flask_skeleton runserver -t 0.0.0.0`
+
+### Vagrant
+
+WIP
