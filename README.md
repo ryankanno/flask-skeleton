@@ -17,7 +17,6 @@ It's stable, but always in a state of flux. :D
 * Flask-Cache
 * Flask-DebugToolBar
 * Flask-Mail
-* Flask-Restful
 * Flask-SeaSurf
 * Flask-Script
 * [Bootstrap 3](http://getbootstrap)
