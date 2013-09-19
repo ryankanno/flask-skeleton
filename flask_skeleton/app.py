@@ -20,9 +20,9 @@ import logging.config
 import os
 
 
-def get_app(config=None):
+def get_app(config=None, **kwargs):
     """Creates a Flask application"""
-    app = Flask(__name__)
+    app = Flask(__name__, **kwargs)
 
     configure_app(app, config)
 
