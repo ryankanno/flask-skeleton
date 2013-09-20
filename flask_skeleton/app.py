@@ -2,18 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from config import DefaultConfig
-from extensions import bcrypt
-from extensions import cache
-from extensions import csrf
-from extensions import mail
-
-from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask
 from flask import jsonify
 from flask import render_template
 from flask import request
 
+import importlib
+import inspect
 import json
 import logging
 import logging.config
@@ -57,12 +53,12 @@ def configure_blueprints(app):
 
 
 def configure_extensions(app):
-    bcrypt.init_app(app)
-    cache.init_app(app)
-    csrf.init_app(app)
-    mail.init_app(app)
-
-    toolbar = DebugToolbarExtension(app)
+    mod = importlib.import_module('extensions')
+    exts = [ext for ext in mod.__dict__.itervalues() if
+            hasattr(ext, '__dict__') and not inspect.isclass(ext)]
+    for ext in exts:
+        if getattr(ext, 'init_app', False):
+            ext.init_app(app)
 
 
 def configure_error_handlers(app):
