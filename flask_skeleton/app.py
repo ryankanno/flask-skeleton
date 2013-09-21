@@ -8,8 +8,8 @@ from flask import jsonify
 from flask import render_template
 from flask import request
 
-import importlib
-import inspect
+from helpers import load_module_instances
+
 import json
 import logging
 import logging.config
@@ -53,10 +53,7 @@ def configure_blueprints(app):
 
 
 def configure_extensions(app):
-    mod = importlib.import_module('extensions')
-    exts = [ext for ext in mod.__dict__.itervalues() if
-            hasattr(ext, '__dict__') and not inspect.isclass(ext)]
-    for ext in exts:
+    for ext in load_module_instances('extensions'):
         if getattr(ext, 'init_app', False):
             ext.init_app(app)
 
