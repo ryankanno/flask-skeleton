@@ -1,0 +1,11 @@
+[uwsgi]
+threads = 40
+master = true
+socket = /tmp/flask-skeleton.sock
+chmod-socket = 777
+logto = /var/log/uwsgi/flask-skeleton.log
+chdir = /home/vagrant/flask-skeleton/code/flask_skeleton
+virtualenv = /home/vagrant/flask-skeleton/venv
+module = uwsgi
+pythonpath = /home/vagrant/flask-skeleton/code/flask_skeleton
+plugins = python27

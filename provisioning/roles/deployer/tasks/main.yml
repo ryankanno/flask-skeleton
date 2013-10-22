@@ -1,0 +1,38 @@
+---
+  - name: 'app: create deploy directory'
+    file: state=directory path=/home/vagrant/flask-skeleton/ owner=vagrant group=vagrant
+
+  - name: 'app: create venv directory'
+    file: state=directory path=/home/vagrant/flask-skeleton/venv/ owner=vagrant group=vagrant
+
+  - name: 'app: create code directory'
+    file: state=directory path=/home/vagrant/flask-skeleton/code/ owner=vagrant group=vagrant
+
+  - name: 'app: create app directory'
+    file: state=directory path=/home/vagrant/flask-skeleton/code/flask_skeleton owner=vagrant group=vagrant
+
+  - name: 'app: copy code over'
+    local_action: command rsync --recursive -ae "ssh -i {{ ansible_ssh_private_key_file }}" {{ flask_skeleton_path }}/flask_skeleton vagrant@88.88.88.88:/home/vagrant/flask-skeleton/code/
+    sudo: no
+
+  - name: 'app: copy requirements.txt'
+    copy: src={{ flask_skeleton_path }}/requirements.txt dest=/home/vagrant/flask-skeleton/requirements.txt
+
+  - name: 'app: install pip'
+    pip: requirements=/home/vagrant/flask-skeleton/requirements.txt virtualenv=/home/vagrant/flask-skeleton/venv/
+
+  - name: 'app: install nginx uwsgi conf'
+    template: src=nginx_uwsgi.conf.j2 dest=/etc/nginx/sites-available/nginx_uwsgi.conf
+    notify: restart nginx
+
+  - name: 'web: enable nginx uwsgi conf'
+    file: src=/etc/nginx/sites-available/nginx_uwsgi.conf dest=/etc/nginx/sites-enabled/nginx_uwsgi.conf state=link
+    notify: restart nginx
+
+  - name: 'web: install uwsgi conf'
+    template: src=flask-skeleton.ini.j2 dest=/etc/uwsgi/apps-available/flask-skeleton.ini
+    notify: restart uwsgi
+
+  - name: 'web: enable uwsgi conf'
+    file: src=/etc/uwsgi/apps-available/flask-skeleton.ini dest=/etc/uwsgi/apps-enabled/flask-skeleton.ini state=link
+    notify: restart uwsgi

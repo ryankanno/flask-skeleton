@@ -1,0 +1,13 @@
+upstream uwsgi {
+    server unix:/tmp/flask-skeleton.sock;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+    charset utf-8;
+    location / {
+        uwsgi_pass  uwsgi;
+        include     uwsgi_params;
+    }
+}

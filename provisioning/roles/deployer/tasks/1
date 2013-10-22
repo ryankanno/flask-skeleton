@@ -7,7 +7,6 @@
   gather_facts: False
   vars: 
     flask_skeleton_path: "/Users/ryankanno/Projects/github/me/flask-skeleton"
-    ssh_key_path: "/Users/ryankanno/Projects/github/me/flask-skeleton"
   roles:
     - common
     - web
