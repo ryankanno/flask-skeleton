@@ -10,6 +10,7 @@
 
   - name: 'common: update apt'
     apt: upgrade=yes
+    tags: common
 
   - name: 'common: install base packages'
     apt: pkg=$item state=installed
@@ -20,3 +21,4 @@
       - python-pip
       - python-virtualenv
       - git
+    tags: common

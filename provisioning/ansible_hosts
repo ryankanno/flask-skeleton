@@ -1,2 +1,2 @@
 [vagrant]
-88.88.88.88 nickname=local vm=1 ansible_ssh_user=vagrant ansible_ssh_private_key_file=/Users/ryankanno/Projects/github/me/flask-skeleton/provisioning/vagrant_key
+88.88.88.88 nickname=local vm=1

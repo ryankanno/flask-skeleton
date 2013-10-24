@@ -1,15 +1,15 @@
 ---
   - name: 'app: create deploy directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/ owner=vagrant group=vagrant
+    file: state=directory path=/home/vagrant/flask-skeleton/ owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create venv directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/venv/ owner=vagrant group=vagrant
+    file: state=directory path=/home/vagrant/flask-skeleton/venv/ owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create code directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/code/ owner=vagrant group=vagrant
+    file: state=directory path=/home/vagrant/flask-skeleton/code/ owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create app directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/code/flask_skeleton owner=vagrant group=vagrant
+    file: state=directory path=/home/vagrant/flask-skeleton/code/flask_skeleton owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: copy code over'
     local_action: command rsync --recursive -ae "ssh -i {{ ansible_ssh_private_key_file }}" {{ flask_skeleton_path }}/flask_skeleton vagrant@88.88.88.88:/home/vagrant/flask-skeleton/code/
