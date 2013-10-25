@@ -1,25 +1,25 @@
 ---
   - name: 'app: create deploy directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/ owner=$ansible_ssh_user group=$ansible_ssh_user
+    file: state=directory path=$flask_skeleton_install_path owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create venv directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/venv/ owner=$ansible_ssh_user group=$ansible_ssh_user
+    file: state=directory path=$flask_skeleton_install_path/venv/ owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create code directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/code/ owner=$ansible_ssh_user group=$ansible_ssh_user
+    file: state=directory path=$flask_skeleton_install_path/code/ owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: create app directory'
-    file: state=directory path=/home/vagrant/flask-skeleton/code/flask_skeleton owner=$ansible_ssh_user group=$ansible_ssh_user
+    file: state=directory path=$flask_skeleton_install_path/code/flask_skeleton owner=$ansible_ssh_user group=$ansible_ssh_user
 
   - name: 'app: copy code over'
-    local_action: command rsync --recursive -ae "ssh -i {{ ansible_ssh_private_key_file }}" {{ flask_skeleton_path }}/flask_skeleton vagrant@88.88.88.88:/home/vagrant/flask-skeleton/code/
+    local_action: command rsync --recursive -ae "ssh -i $ansible_ssh_private_key_file" $flask_skeleton_src_path/flask_skeleton $ansible_ssh_user_for_local_action@$inventory_hostname:$flask_skeleton_install_path/code/
     sudo: no
 
   - name: 'app: copy requirements.txt'
-    copy: src={{ flask_skeleton_path }}/requirements.txt dest=/home/vagrant/flask-skeleton/requirements.txt
+    copy: src=$flask_skeleton_src_path/requirements.txt dest=$flask_skeleton_install_path/requirements.txt
 
   - name: 'app: install pip'
-    pip: requirements=/home/vagrant/flask-skeleton/requirements.txt virtualenv=/home/vagrant/flask-skeleton/venv/
+    pip: requirements=$flask_skeleton_install_path/requirements.txt virtualenv=$flask_skeleton_install_path/venv/
 
   - name: 'app: install nginx uwsgi conf'
     template: src=nginx_uwsgi.conf.j2 dest=/etc/nginx/sites-available/nginx_uwsgi.conf
