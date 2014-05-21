@@ -38,6 +38,6 @@ nosetests.xml
 */apps/static/components/**
 
 # logging
-*/log/*.log
+*/logs/*.log
 
 .vagrant

@@ -19,7 +19,7 @@ It's stable, but always in a state of flux. :D
 * Flask-Mail
 * Flask-SeaSurf
 * Flask-Script
-* [Bootstrap 3](http://getbootstrap)
+* [Bootstrap 3](http://getbootstrap.com)
 
 ## Install
 
