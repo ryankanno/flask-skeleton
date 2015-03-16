@@ -14,18 +14,13 @@
     <meta name="author" content="{% block meta_author %}{% endblock meta_author %}" />
     <meta name="viewport" content="width=device-width" />
     {% endblock meta %}
-    
+
     {% block css %}
         {% block css_shared %}
         <link rel="stylesheet" href="{{ url_for('static', filename='components/bootstrap/dist/css/bootstrap.min.css') }}" />
         {% endblock css_shared %}
         {% block css_custom %}{% endblock css_custom %}
     {% endblock css%}
-
-    <!--[if lt IE 9]>
-    <script src="{{ url_for('static', filename='components/bootstrap/assets/js/html5shiv.js') }}"></script>
-    <script src="{{ url_for('static', filename='components/bootstrap/assets/js/respond.min.js') }}"></script>
-    <![endif]-->
 </head>
 
 {% block body %}
@@ -126,7 +121,7 @@
 
     {% block js %}
         {% block js_shared %}
-            <script src="{{ url_for('static', filename='components/bootstrap/assets/js/jquery.js') }}"></script>
+            <script src="{{ url_for('static', filename='components/jquery/dist/jquery.min.js') }}"></script>
             <script src="{{ url_for('static', filename='components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         {% endblock js_shared %}
         {% block js_custom %}{% endblock js_custom %}
