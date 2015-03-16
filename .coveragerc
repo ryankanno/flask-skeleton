@@ -1,0 +1,7 @@
+[run]
+
+omit =
+    */python?.?/*
+    */site-packages/nose/*
+    */tests/*
+    flask_skeleton/__init__.py

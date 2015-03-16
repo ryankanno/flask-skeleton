@@ -1,0 +1,13 @@
+include CHANGES
+include LICENSE
+include MANIFEST.in
+include README.rst
+include requirements-tox.txt
+include requirements.txt
+include setup.cfg
+include setup.py
+include TODO
+recursive-include flask_skeleton *.py
+recursive-include tests *.py
+recursive-include docs *
+prune *.pyc
