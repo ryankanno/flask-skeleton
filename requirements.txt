@@ -4,5 +4,4 @@ Flask-Cache
 Flask-Mail
 Flask-SeaSurf
 Flask-Script
-
-git+git://github.com/mgood/flask-debugtoolbar.git
+Flask-DebugToolbar
