@@ -1,25 +1,38 @@
 ---
-  - name: 'app: create deploy directory'
-    file: state=directory path=$flask_skeleton_install_path owner=$ansible_ssh_user group=$ansible_ssh_user
+  - name: deployer | main.yml | create deploy directory
+    file: state=directory path={{ flask_skeleton_install_path }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
 
-  - name: 'app: create venv directory'
-    file: state=directory path=$flask_skeleton_install_path/venv/ owner=$ansible_ssh_user group=$ansible_ssh_user
+  - name: deployer | main.yml | create virtual env directory
+    file: state=directory path={{ flask_skeleton_install_path }}/venv/ owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
 
-  - name: 'app: create code directory'
-    file: state=directory path=$flask_skeleton_install_path/code/ owner=$ansible_ssh_user group=$ansible_ssh_user
+  - name: deployer | main.yml | create src directory
+    file: state=directory path={{ flask_skeleton_install_path }}/code/ owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
 
-  - name: 'app: create app directory'
-    file: state=directory path=$flask_skeleton_install_path/code/flask_skeleton owner=$ansible_ssh_user group=$ansible_ssh_user
+  - name: deployer | main.yml | create app directory
+    file: state=directory path={{ flask_skeleton_install_path }}/code/flask_skeleton owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
 
-  - name: 'app: copy code over'
-    local_action: command rsync --recursive -ae "ssh -i $ansible_ssh_private_key_file" $flask_skeleton_src_path/flask_skeleton $ansible_ssh_user_for_local_action@$inventory_hostname:$flask_skeleton_install_path/code/
-    sudo: no
+  - name: deployer | main.yml | get release timestamp
+    command: date +%Y%m%d%H%M%S
+    register: timestamp
 
-  - name: 'app: copy requirements.txt'
-    copy: src=$flask_skeleton_src_path/requirements.txt dest=$flask_skeleton_install_path/requirements.txt
+  - name: deployer | main.yml | get release directory
+    command: echo "{{ flask_skeleton_install_path}}/code/flask_skeleton/releases/{{ timestamp.stdout }}"
+    register: release_path
 
-  - name: 'app: install pip'
-    pip: requirements=$flask_skeleton_install_path/requirements.txt virtualenv=$flask_skeleton_install_path/venv/
+  - name: deployer | main.yml | create release directory
+    file: state=directory path={{ release_path.stdout }}
+
+  - name: deployer | main.yml | copy src folder to server
+    copy: src={{ flask_skeleton_src_path }}/flask_skeleton/ dest={{ release_path.stdout }}
+
+  - name: deployer | main.yml | copy requirements to server
+    copy: src={{ flask_skeleton_src_path }}/requirements.txt dest={{ release_path.stdout }}
+
+  - name: deployer | main.yml | install requirements.txt
+    pip: requirements={{ release_path.stdout }}/requirements.txt virtualenv={{ flask_skeleton_install_path }}/venv/
+
+  - name: deployer | main.yml | update current symlink
+    file: state=link path={{ flask_skeleton_install_path }}/code/flask_skeleton/current src={{ release_path.stdout }}
 
   - name: 'app: install nginx uwsgi conf'
     template: src=nginx_uwsgi.conf.j2 dest=/etc/nginx/sites-available/nginx_uwsgi.conf

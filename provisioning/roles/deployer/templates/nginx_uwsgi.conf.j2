@@ -6,6 +6,11 @@ server {
     listen 80;
     server_name localhost;
     charset utf-8;
+
+    location /static {
+        alias {{ flask_skeleton_install_path }}/code/flask_skeleton/current/apps/static;
+    }
+
     location / {
         uwsgi_pass  uwsgi;
         include     uwsgi_params;

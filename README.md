@@ -1,10 +1,7 @@
 # flask-skeleton
 
-Here be dragons.
-
-This is an opinionated Flask application I model most of my projects after.
-
-It's stable, but always in a state of flux. :D
+This is an opinionated Flask application that I model most of my projects
+after.
 
 ## Dependencies
 
@@ -42,4 +39,10 @@ then run the following command.
 
 ### Vagrant
 
-WIP
+To test the skeleton w/ Vagrant, run the following command:
+
+* `vagrant up`
+
+Anytime you make new changes to your application, run the following command:
+
+* `vagrant provision`

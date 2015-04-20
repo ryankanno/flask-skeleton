@@ -1,19 +1,6 @@
 ---
-
-  - name: 'common: install python-apt'
-    raw: 'apt-get install -y python-apt'
-    tags: common
-
-  - name: 'common: update apt package cache'
-    apt: update_cache=yes
-    tags: common
-
-  - name: 'common: update apt'
-    apt: upgrade=yes
-    tags: common
-
-  - name: 'common: install base packages'
-    apt: pkg=$item state=installed
+  - name: common | main.yml | install base packages
+    apt: pkg={{ item }} state=installed update_cache=yes cache_valid_time=3600
     with_items:
       - build-essential
       - python
