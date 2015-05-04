@@ -1,0 +1,11 @@
+[uwsgi]
+threads = 40
+master = true
+socket = 127.0.0.1:50060
+chdir = {{ flask_application.target.path }}/current/flask_skeleton
+virtualenv = {{ flask_application.target.venvs_path }}/current
+pythonpath = {{ flask_application.target.path }}/current/flask_skeleton
+wsgi-file = uwsgi.py
+callable = app
+uid = {{ flask_application.user }}
+gid = {{ flask_application.group }}

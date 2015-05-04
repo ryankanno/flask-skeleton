@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+[program:nginx]
+autostart=true
+command=/usr/sbin/nginx
+user = root
+
+[program:flask_skeleton]
+autostart=true
+command=/usr/local/bin/uwsgi --ini /etc/uwsgi/apps-enabled/flask_skeleton.ini
+user=root

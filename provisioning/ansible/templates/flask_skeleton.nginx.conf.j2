@@ -1,0 +1,19 @@
+upstream flask_skeleton {
+    server 127.0.0.1:50060;
+}
+
+server {
+    listen 80;
+    server_name flask_skeleton.local;
+    charset utf-8;
+    root {{ flask_application.target.path }}/current;
+
+    location /static {
+        alias {{ flask_application.target.static_path }};
+    }
+
+    location / {
+        uwsgi_pass  flask_skeleton;
+        include     uwsgi_params;
+    }
+}
