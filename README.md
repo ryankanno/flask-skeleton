@@ -39,10 +39,28 @@ then run the following command.
 
 ### Vagrant
 
-To test the skeleton w/ Vagrant, run the following command:
+The skeleton has been integrated with
+[Ansible-Flask](http://github.com/ryankanno/ansible-flask).  You'll need to
+clone that project into a directory of your choice.
 
-* `vagrant up`
+To test the skeleton with [Ansible-Flask](http://github.com/ryankanno/ansible-flask),
+the Vagrantfile is looking for an environment variable named ANSIBLE_FLASK_PATH
+that contains the path to the [Ansible-Flask](http://github.com/ryankanno/ansible-flask) project.
 
-Anytime you make new changes to your application, run the following command:
+To provision the machines, you'll want to make sure the Vagrantfile contains
+the following line:
 
-* `vagrant provision`
+`ansible.playbook = ENV['ANSIBLE_FLASK_PATH'] + "/provisioning/ansible/site.yml"`
+
+then run the following command:
+
+* `ANSIBLE_FLASK_PATH=/path/to/ansible-flask/on/your/machine vagrant up`
+
+To deploy new changes to the code, you'll want to make sure the Vagrantfile contains
+the following line:
+
+`ansible.playbook = ENV['ANSIBLE_FLASK_PATH'] + "/provisioning/ansible/deploy.yml"`
+
+then run the following command:
+
+* `ANSIBLE_FLASK_PATH=/path/to/ansible-flask/on/your/machine vagrant provision`
