@@ -41,3 +41,4 @@ nosetests.xml
 */logs/*.log
 
 .vagrant
+.python-version
