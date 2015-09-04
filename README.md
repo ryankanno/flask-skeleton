@@ -3,6 +3,10 @@
 This is an opinionated Flask application that I model most of my projects
 after.
 
+## 2015-09-03
+
+I’ve redone flask-skeleton as a Cookiecutter @ https://github.com/ryankanno/cookiecutter-flask. This repo will no longer be maintained.
+
 ## Dependencies
 
 * [Bower](http://bower.io)
