@@ -1,7 +1,8 @@
-# flask-skeleton
+Flask-Skeleton
+==============
 
 This is an opinionated Flask application that I model most of my projects
-after.
+after.  **This project is no longer being maintained. (see below)**
 
 ## 2015-09-03
 
@@ -44,27 +45,28 @@ then run the following command.
 ### Vagrant
 
 The skeleton has been integrated with
-[Ansible-Flask](http://github.com/ryankanno/ansible-flask).  You'll need to
-clone that project into a directory of your choice.
+[ansible-nginx-uwsgi-supervisor-deployer](http://github.com/ryankanno/ansible-nginx-uwsgi-supervisor-deployer).  
+To test out the installation in Vagrant, you'll ideally want to clone the following projects into the same parent directory:
 
-To test the skeleton with [Ansible-Flask](http://github.com/ryankanno/ansible-flask),
-the Vagrantfile is looking for an environment variable named ANSIBLE_FLASK_PATH
-that contains the path to the [Ansible-Flask](http://github.com/ryankanno/ansible-flask) project.
+* [ansible-nginx-uwsgi-supervisor-deployer](http://github.com/ryankanno/ansible-nginx-uwsgi-supervisor-deployer)
+* [ansible-nginx-uwsgi-supervisor](http://github.com/ryankanno/ansible-nginx-uwsgi-supervisor)
+* [ansible-roles](http://github.com/ryankanno/ansible-roles)
+
+After checking those three projects out, you'll need to do two things:
+
+* Create an ansible.cfg ([example](http://github.com/ryankanno/flask-skeleton/tree/master/ansible.cfg.example)) with the roles_path pointed to the parent directory from above
+* `export NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH=<path_to_where_you_checked_out_ansible-nginx-uwsgi-supervisor-deployer>`
+
 
 To provision the machines, you'll want to make sure the Vagrantfile contains
 the following line:
 
-`ansible.playbook = ENV['ANSIBLE_FLASK_PATH'] + "/provisioning/ansible/site.yml"`
+`ansible.playbook = ENV['NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH'] + "/provisioning/ansible/site.yml"`
 
 then run the following command:
 
-* `ANSIBLE_FLASK_PATH=/path/to/ansible-flask/on/your/machine vagrant up`
+* `vagrant up`
 
-To deploy new changes to the code, you'll want to make sure the Vagrantfile contains
-the following line:
+To deploy new changes to flask-skeleton, you'll want to run the following command:
 
-`ansible.playbook = ENV['ANSIBLE_FLASK_PATH'] + "/provisioning/ansible/deploy.yml"`
-
-then run the following command:
-
-* `ANSIBLE_FLASK_PATH=/path/to/ansible-flask/on/your/machine vagrant provision`
+* `vagrant provision`
