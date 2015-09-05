@@ -42,3 +42,4 @@ nosetests.xml
 
 .vagrant
 .python-version
+ansible.cfg
