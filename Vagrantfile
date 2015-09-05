@@ -16,12 +16,12 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 80, host: 50058, auto_correct: true
 
   config.vm.provision :ansible do |ansible|
-    ansible.playbook = ENV['ANSIBLE_FLASK_PATH'] + "/provisioning/ansible/deploy.yml"
+    ansible.playbook = ENV['NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH'] + "/provisioning/ansible/site.yml"
     ansible.extra_vars = {
       nginx: {
-        sites_conf: [
+        vhosts_conf: [
           {
-            src_path: File.dirname(__FILE__) + '/provisioning/ansible/templates/flask_skeleton.nginx.conf.j2',
+            src_path: ENV['NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH'] + '/provisioning/ansible/templates/app.nginx.conf.j2',
             target_name: 'flask_skeleton.conf'
           }
         ]
@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
       uwsgi: {
         apps_conf: [
           {
-            src_path: File.dirname(__FILE__) + '/provisioning/ansible/templates/flask_skeleton.uwsgi.ini.j2',
+            src_path: ENV['NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH'] + '/provisioning/ansible/templates/app.uwsgi.ini.j2',
             target_name: 'flask_skeleton.ini'
           }
         ]
@@ -40,33 +40,45 @@ Vagrant.configure(2) do |config|
         },
         apps_conf: [
           {
-            src_path: File.dirname(__FILE__) + '/provisioning/ansible/templates/flask_skeleton.supervisor.conf.j2',
+            src_path: ENV['NGINX_UWSGI_SUPERVISOR_DEPLOYER_PATH']  + '/provisioning/ansible/templates/app.supervisor.conf.j2',
             target_name: 'flask_skeleton.conf'
           }
         ]
       },
-      flask_application: {
+
+      application_target_root_path: "/var/www/applications/flask-skeleton",
+      application: {
+        name: 'flask_skeleton',
+        hostname: 'flaskskeleton.com',
         user: 'www-data',
         group: 'www-data',
+        port: 50058,
         src: {
-          path: File.dirname(__FILE__) + '/flask_skeleton',
+          path: File.dirname(__FILE__) + '/flask_skeleton/',
           requirements_path:  File.dirname(__FILE__) + '/requirements.txt'
         },
         target: {
-          path: '/var/www/flask_applications/flask_skeleton/app',
-          venvs_path: '/var/www/flask_applications/flask_skeleton/venvs',
-          static_path: '/var/www/flask_applications/flask_skeleton/app/current/flask_skeleton/apps/static'
+          app_path: "{{ application_target_root_path}}/app",
+          logs_path: "{{ application_target_root_path}}/logs",
+          venvs_path: "{{ application_target_root_path}}/venvs",
+          static_path: "{{ application_target_root_path}}/current/flask_skeleton/apps/static"
         },
         dependencies: [
           { package: 'python2.7', version: '2.7.6-8' },
-          { package: 'python-pip', version: '1.5.4-1ubuntu1' },
+          { package: 'python-pip', version: '1.5.4-1ubuntu3' },
           { package: 'python-virtualenv', version: '1.11.4-1' },
           { package: 'python-dev', version: '2.7.5-5ubuntu3' },
         ]
+      },
+      deploy: {
+        supervisor: {
+          group: 'flask_skeleton:'
+        }
       }
     }
-    ansible.inventory_path = "./provisioning/ansible/ansible_hosts"
-    # ansible.verbose = 'vvvv'
+    ansible.groups = {
+      "web" => ["flaskskeleton.local"]
+    }
     ansible.limit = 'web'
   end
 
