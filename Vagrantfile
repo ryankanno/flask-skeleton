@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = false
-  config.vm.define "flaskskeleton.local"
+  config.vm.define "flaskskeleton_vm"
 
   config.vm.hostname = 'flaskskeleton.local'
   config.vm.network "private_network", ip: "192.168.58.58"
@@ -77,12 +77,12 @@ Vagrant.configure(2) do |config|
       }
     }
     ansible.groups = {
-      "web" => ["flaskskeleton.local"]
+      "web" => ["flaskskeleton_vm"]
     }
     ansible.limit = 'web'
   end
 
   config.vm.provider "virtualbox" do |vm|
-    vm.name = "flaskskeleton.local"
+    vm.name = "flaskskeleton_vm"
   end
 end
